@@ -37,6 +37,18 @@ function About() {
 
         <div className="about-content">
           <motion.div
+            className="about-photo"
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className="photo-wrapper">
+              <img src="/profile-photo.jpg" alt="Dave H." />
+            </div>
+          </motion.div>
+
+          <motion.div
             className="about-text"
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
