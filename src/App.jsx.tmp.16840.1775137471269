@@ -1,0 +1,57 @@
+import { useEffect, useRef } from 'react'
+import Navbar from './components/Navbar'
+import Hero from './components/Hero'
+import About from './components/About'
+import Skills from './components/Skills'
+import Projects from './components/Projects'
+import Contact from './components/Contact'
+import Footer from './components/Footer'
+import './App.css'
+
+function App() {
+  const bgRef = useRef(null)
+
+  useEffect(() => {
+    let current = 0
+    let target = 0
+    let rafId = null
+
+    const lerp = (start, end, factor) => start + (end - start) * factor
+
+    const animate = () => {
+      target = window.scrollY * 0.2
+      current = lerp(current, target, 0.08)
+
+      if (Math.abs(current - target) < 0.5) {
+        current = target
+      }
+
+      if (bgRef.current) {
+        bgRef.current.style.transform = `translateY(${current}px)`
+      }
+
+      rafId = requestAnimationFrame(animate)
+    }
+
+    rafId = requestAnimationFrame(animate)
+    return () => cancelAnimationFrame(rafId)
+  }, [])
+
+  return (
+    <div className="app">
+      <div className="parallax-bg" ref={bgRef} />
+      <div className="parallax-overlay" />
+      <div className="app-content">
+        <Navbar />
+        <Hero />
+        <About />
+        <Skills />
+        <Projects />
+        <Contact />
+        <Footer />
+      </div>
+    </div>
+  )
+}
+
+export default App

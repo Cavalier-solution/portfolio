@@ -1,0 +1,99 @@
+import { motion } from 'framer-motion'
+import { FiGithub, FiExternalLink } from 'react-icons/fi'
+import './Projects.css'
+
+const projects = [
+  {
+    title: 'E-Commerce Platform',
+    description:
+      'A full-stack e-commerce application with real-time inventory management, payment integration, and admin dashboard.',
+    image: '/project-ecommerce.jpg',
+    tags: ['React', 'Node.js', 'PostgreSQL', 'Stripe'],
+    github: '#',
+    live: '#',
+  },
+  {
+    title: 'Task Management App',
+    description:
+      'Collaborative project management tool with real-time updates, drag-and-drop boards, and team analytics.',
+    image: '/project-taskapp.jpg',
+    tags: ['Next.js', 'TypeScript', 'MongoDB', 'Socket.io'],
+    github: '#',
+    live: '#',
+  },
+  {
+    title: 'AI Chat Application',
+    description:
+      'Intelligent chat application powered by machine learning with natural language processing and sentiment analysis.',
+    image: '/project-aichat.jpg',
+    tags: ['React', 'Python', 'FastAPI', 'OpenAI'],
+    github: '#',
+    live: '#',
+  },
+  {
+    title: 'Finance Dashboard',
+    description:
+      'Real-time financial dashboard with data visualization, portfolio tracking, and automated reporting.',
+    image: '/project-finance.jpg',
+    tags: ['React', 'D3.js', 'Node.js', 'AWS'],
+    github: '#',
+    live: '#',
+  },
+]
+
+function Projects() {
+  return (
+    <section id="projects">
+      <div className="container">
+        <motion.div
+          className="section-header"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
+          <h2 className="section-title">Projects</h2>
+          <p className="section-subtitle">Some things I've built</p>
+        </motion.div>
+
+        <div className="projects-grid">
+          {projects.map((project, index) => (
+            <motion.div
+              key={project.title}
+              className="project-card"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+            >
+              <div className="project-image">
+                <img src={project.image} alt={project.title} />
+                <div className="project-image-overlay">
+                  <div className="project-links">
+                    <a href={project.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                      <FiGithub />
+                    </a>
+                    <a href={project.live} target="_blank" rel="noopener noreferrer" aria-label="Live Demo">
+                      <FiExternalLink />
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div className="project-content">
+                <h3 className="project-title">{project.title}</h3>
+                <p className="project-description">{project.description}</p>
+                <div className="project-tags">
+                  {project.tags.map((tag) => (
+                    <span key={tag} className="tag">{tag}</span>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+export default Projects

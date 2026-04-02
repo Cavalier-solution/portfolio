@@ -1,0 +1,152 @@
+import { useState, useEffect, useRef } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import {
+  SiReact, SiNodedotjs, SiTypescript, SiJavascript,
+  SiPython, SiPostgresql, SiMongodb, SiDocker,
+  SiGit, SiTailwindcss, SiNextdotjs,
+} from 'react-icons/si'
+import { FaAws } from 'react-icons/fa'
+import './Skills.css'
+
+const skills = [
+  { name: 'React', icon: <SiReact />, color: '#61DAFB', desc: 'Building dynamic UIs with component-based architecture and hooks.' },
+  { name: 'Node.js', icon: <SiNodedotjs />, color: '#339933', desc: 'Server-side JavaScript for scalable backend services and APIs.' },
+  { name: 'TypeScript', icon: <SiTypescript />, color: '#3178C6', desc: 'Type-safe development for robust and maintainable codebases.' },
+  { name: 'JavaScript', icon: <SiJavascript />, color: '#F7DF1E', desc: 'Core language for interactive web experiences and full-stack dev.' },
+  { name: 'Python', icon: <SiPython />, color: '#3776AB', desc: 'Data processing, automation, and machine learning solutions.' },
+  { name: 'PostgreSQL', icon: <SiPostgresql />, color: '#4169E1', desc: 'Advanced relational database with complex query optimization.' },
+  { name: 'MongoDB', icon: <SiMongodb />, color: '#47A248', desc: 'Flexible NoSQL database for rapid prototyping and scaling.' },
+  { name: 'Docker', icon: <SiDocker />, color: '#2496ED', desc: 'Containerized deployments for consistent dev-to-prod workflows.' },
+  { name: 'Git', icon: <SiGit />, color: '#F05032', desc: 'Version control and collaborative development with branching strategies.' },
+  { name: 'Tailwind', icon: <SiTailwindcss />, color: '#06B6D4', desc: 'Utility-first CSS for rapid, responsive UI development.' },
+  { name: 'Next.js', icon: <SiNextdotjs />, color: '#ffffff', desc: 'Full-stack React framework with SSR and static generation.' },
+  { name: 'AWS', icon: <FaAws />, color: '#FF9900', desc: 'Cloud infrastructure with EC2, Lambda, S3, and more.' },
+]
+
+function SkillOrbit({ skills, onHover, active }) {
+  const [angle, setAngle] = useState(0)
+  const pausedRef = useRef(false)
+  const rafRef = useRef(null)
+  const lastTimeRef = useRef(null)
+
+  useEffect(() => {
+    const animate = (time) => {
+      if (lastTimeRef.current === null) lastTimeRef.current = time
+      const delta = time - lastTimeRef.current
+      lastTimeRef.current = time
+
+      if (!pausedRef.current) {
+        setAngle(prev => (prev + delta * 0.015) % 360)
+      }
+
+      rafRef.current = requestAnimationFrame(animate)
+    }
+    rafRef.current = requestAnimationFrame(animate)
+    return () => cancelAnimationFrame(rafRef.current)
+  }, [])
+
+  const count = skills.length
+  const radiusX = 200
+  const radiusY = 160
+
+  return (
+    <div
+      className="orbit-container"
+      onMouseEnter={() => { pausedRef.current = true }}
+      onMouseLeave={() => { pausedRef.current = false; onHover(null) }}
+    >
+      {/* Orbit ring */}
+      <div className="orbit-ring" />
+
+      {skills.map((skill, i) => {
+        const theta = ((360 / count) * i + angle) * (Math.PI / 180)
+        const x = Math.cos(theta) * radiusX
+        const y = Math.sin(theta) * radiusY
+        const scale = 0.7 + 0.3 * ((Math.sin(theta) + 1) / 2)
+        const zIndex = Math.round(scale * 100)
+        const opacity = 0.5 + 0.5 * scale
+
+        return (
+          <div
+            key={skill.name}
+            className={`skill-card ${active?.name === skill.name ? 'active' : ''}`}
+            style={{
+              transform: `translate(${x}px, ${y}px) scale(${scale})`,
+              zIndex,
+              opacity,
+            }}
+            onMouseEnter={() => onHover(skill)}
+          >
+            <span className="skill-icon" style={{ color: skill.color }}>
+              {skill.icon}
+            </span>
+            <span className="skill-name">{skill.name}</span>
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
+function Skills() {
+  const [active, setActive] = useState(null)
+
+  return (
+    <section id="skills">
+      <div className="container">
+        <motion.div
+          className="section-header"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
+          <h2 className="section-title">Skills</h2>
+          <p className="section-subtitle">Technologies I work with</p>
+        </motion.div>
+      </div>
+
+      <div className="skills-layout">
+        {/* Left: description panel */}
+        <div className="skills-info">
+          <AnimatePresence mode="wait">
+            {active ? (
+              <motion.div
+                key={active.name}
+                className="skill-detail"
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.25 }}
+              >
+                <span className="skill-detail-icon" style={{ color: active.color }}>
+                  {active.icon}
+                </span>
+                <h3 className="skill-detail-name">{active.name}</h3>
+                <p className="skill-detail-desc">{active.desc}</p>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="default"
+                className="skill-detail default"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.25 }}
+              >
+                <p className="skill-detail-hint">Hover a skill to see details</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* Right: orbit */}
+        <div className="skills-orbit">
+          <SkillOrbit skills={skills} onHover={setActive} active={active} />
+        </div>
+      </div>
+    </section>
+  )
+}
+
+export default Skills
