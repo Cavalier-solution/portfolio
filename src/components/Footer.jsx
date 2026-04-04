@@ -6,7 +6,7 @@ function Footer() {
     <footer className="footer">
       <div className="container footer-content">
         <a href="#home" className="footer-logo">
-          {'<Dave H. />'}
+          {'<Dave Roberts />'}
         </a>
         <div className="footer-socials">
           <a href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
@@ -20,7 +20,7 @@ function Footer() {
           </a>
         </div>
         <p className="footer-copy">
-          &copy; {new Date().getFullYear()} Dave H. All rights reserved.
+          &copy; {new Date().getFullYear()} Dave Roberts All rights reserved.
         </p>
       </div>
     </footer>

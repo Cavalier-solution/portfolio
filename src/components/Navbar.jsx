@@ -44,7 +44,7 @@ function Navbar() {
     >
       <div className="nav-container">
         <a href="#home" className="nav-logo">
-          {'<Dave H. />'}
+          {'<Dave Roberts />'}
         </a>
 
         <ul className={`nav-links ${menuOpen ? 'active' : ''}`}>

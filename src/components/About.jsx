@@ -44,7 +44,7 @@ function About() {
             transition={{ duration: 0.5 }}
           >
             <div className="photo-wrapper">
-              <img src="/profile-photo.jpg" alt="Dave H." />
+              <img src="/hero-photo.png" alt="Dave Roberts" />
             </div>
           </motion.div>
 
